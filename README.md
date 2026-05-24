@@ -23,7 +23,7 @@ REST API для управления организационной структ
 1. **Клонируйте репозиторий** (если нужно):
 ```bash
 git clone https://github.com/Vivarlee/OrgApi
-cd orgapi
+cd OrgApi
 
 # Сборка и запуск
 docker-compose up --build

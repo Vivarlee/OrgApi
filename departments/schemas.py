@@ -3,53 +3,50 @@ from typing import Optional, List
 from datetime import date, datetime
 
 
+def validate_not_empty(v: str, field_name: str) -> str:
+    """Validate that a string is not empty after stripping"""
+    if not isinstance(v, str):
+        raise ValueError(f'{field_name} must be a string')
+    v = v.strip()
+    if not v:
+        raise ValueError(f'{field_name} cannot be empty')
+    if len(v) > 200:
+        raise ValueError(f'{field_name} must be 200 characters or fewer')
+    return v
+
+
 class DepartmentCreate(BaseModel):
-    name: str = Field(..., min_length=1, max_length=200)
+    name: str
     parent_id: Optional[int] = None
 
     @validator('name')
     def validate_name(cls, v):
-        v = v.strip()
-        if not v:
-            raise ValueError('Name cannot be empty')
-        if len(v) > 200:
-            raise ValueError('Name must be 200 characters or fewer')
-        return v
+        return validate_not_empty(v, 'Name')
 
 
 class DepartmentUpdate(BaseModel):
-    name: Optional[str] = Field(None, min_length=1, max_length=200)
+    name: Optional[str] = None
     parent_id: Optional[int] = None
 
     @validator('name')
     def validate_name(cls, v):
         if v is not None:
-            v = v.strip()
-            if not v:
-                raise ValueError('Name cannot be empty')
-            if len(v) > 200:
-                raise ValueError('Name must be 200 characters or fewer')
+            return validate_not_empty(v, 'Name')
         return v
 
 
 class EmployeeCreate(BaseModel):
-    full_name: str = Field(..., min_length=1, max_length=200)
-    position: str = Field(..., min_length=1, max_length=200)
+    full_name: str
+    position: str
     hired_at: Optional[date] = None
 
     @validator('full_name')
     def validate_full_name(cls, v):
-        v = v.strip()
-        if not v:
-            raise ValueError('Full name cannot be empty')
-        return v
+        return validate_not_empty(v, 'Full name')
 
     @validator('position')
     def validate_position(cls, v):
-        v = v.strip()
-        if not v:
-            raise ValueError('Position cannot be empty')
-        return v
+        return validate_not_empty(v, 'Position')
 
 
 class DepartmentResponse(BaseModel):

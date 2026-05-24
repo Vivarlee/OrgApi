@@ -77,7 +77,6 @@ class DepartmentAPITestCase(TestCase):
             position='Developer'
         )
 
-        # Используем новый URL для получения подразделения
         response = self.client.get(
             f'/departments/{parent.id}/?depth=2&include_employees=true'
         )
@@ -93,7 +92,6 @@ class DepartmentAPITestCase(TestCase):
         parent2 = Department.objects.create(name='Parent 2')
         child = Department.objects.create(name='Child', parent=parent1)
 
-        # Используем PATCH на том же URL что и GET
         response = self.client.patch(
             f'/departments/{child.id}/',
             data=json.dumps({'parent_id': parent2.id}),
@@ -108,7 +106,6 @@ class DepartmentAPITestCase(TestCase):
         parent = Department.objects.create(name='Parent')
         child = Department.objects.create(name='Child', parent=parent)
 
-        # Пытаемся сделать parent дочерним для child
         response = self.client.patch(
             f'/departments/{parent.id}/',
             data=json.dumps({'parent_id': child.id}),
@@ -125,7 +122,6 @@ class DepartmentAPITestCase(TestCase):
             position='Manager'
         )
 
-        # DELETE на том же URL
         response = self.client.delete(
             f'/departments/{department.id}/?mode=cascade'
         )

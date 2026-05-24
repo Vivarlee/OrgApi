@@ -1,9 +1,5 @@
 #!/bin/bash
 
-# Wait for database to be ready
-echo "Waiting for database..."
-echo "Database is ready!"
-
 # Apply database migrations
 echo "Creating and applying database migrations..."
 python manage.py makemigrations departments

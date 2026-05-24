@@ -5,7 +5,7 @@ WORKDIR /app
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-# Install system dependencies including netcat-openbsd
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
     gcc \
     libpq-dev \
@@ -17,6 +17,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-RUN chmod +x /app/entrypoint.sh
+# Убеждаемся, что entrypoint.sh имеет права на выполнение
+RUN chmod +x /app/entrypoint.sh && \
+    sed -i 's/\r$//' /app/entrypoint.sh
 
-ENTRYPOINT ["/app/entrypoint.sh"]
+# Указываем entrypoint
+ENTRYPOINT ["/bin/bash", "/app/entrypoint.sh"]
